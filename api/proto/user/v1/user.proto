@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package user.v1;
+option go_package = "user/v1;userv1";
+
+service UserService {
+  rpc Signup(SignupRequest) returns (SignupResponse);
+  rpc FindOrCreate(FindOrCreateRequest) returns (FindOrCreateResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Profile(ProfileRequest) returns (ProfileResponse);
+  // UpdateNonSensitiveInfo 更新非敏感数据
+  rpc UpdateNonSensitiveInfo(UpdateNonSensitiveInfoRequest) returns (UpdateNonSensitiveInfoResponse);
+  rpc FindOrCreateByWechat(FindOrCreateByWechatRequest) returns (FindOrCreateByWechatResponse);
+  // 微信登录接口
+  rpc AuthURL(AuthURLRequest) returns (AuthURLResponse);
+  rpc VerifyCode(VerifyCodeRequest) returns (VerifyCodeResponse);
+}
+
+message User  {
+  int64 id = 1;
+  string email = 2;
+  string phone = 3;
+  string password = 4;
+  string nickname = 5;
+  string personal_profile = 6;
+  google.protobuf.Timestamp birthday = 7;
+  WechatInfo wechat_info = 8;
+  google.protobuf.Timestamp ctime = 9;
+}
+
+message WechatInfo  {
+  string open_id = 1;
+  string union_id = 2;
+}
+
+message SignupRequest {
+  User user = 1;
+}
+
+message SignupResponse {
+}
+
+message FindOrCreateRequest {
+  string phone = 1;
+}
+
+message FindOrCreateResponse {
+  User user = 1;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  User user = 1;
+}
+
+message ProfileRequest {
+  int64 id = 1;
+}
+
+message ProfileResponse {
+  User user = 1;
+}
+
+message UpdateNonSensitiveInfoRequest {
+  User user = 1;
+}
+
+message UpdateNonSensitiveInfoResponse {
+
+}
+
+message FindOrCreateByWechatRequest {
+  WechatInfo wechat_info = 1;
+}
+
+message FindOrCreateByWechatResponse {
+  User user = 1;
+}
+
+message AuthURLRequest {
+  string state = 1;
+}
+
+message AuthURLResponse {
+  string url = 1;
+}
+
+message VerifyCodeRequest {
+  string code = 1;
+}
+
+message VerifyCodeResponse {
+  WechatInfo wechat_info = 1;
+}

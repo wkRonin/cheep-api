@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "article/v1/article.proto";
+
+package ranking.v1;
+option go_package = "ranking/v1;rankingv1";
+
+
+
+service RankingService {
+  // TopN 返回业务的 ID
+  rpc TopN(TopNRequest) returns (TopNResponse);
+}
+
+message TopNRequest {
+
+}
+
+message TopNResponse {
+repeated article.v1.Article article=1;
+}

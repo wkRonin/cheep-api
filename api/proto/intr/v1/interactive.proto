@@ -1,0 +1,167 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package intr.v1;
+option go_package = "intr/v1;intrv1";
+
+
+
+
+service InteractiveService {
+  rpc IncrReadCnt(IncrReadCntRequest) returns (IncrReadCntResponse);
+  // Like 点赞
+  rpc Like(LikeRequest) returns (LikeResponse);
+  // CancelLike 取消点赞
+  rpc CancelLike(CancelLikeRequest) returns (CancelLikeResponse);
+  // GetInteractive 获取单个资源的交互数据
+  rpc GetInteractive(GetInteractiveRequest) returns(GetInteractiveResponse);
+  // GetInteractiveByIds 批量获取资源的交互数据
+  rpc GetInteractiveByIds(GetInteractiveByIdsRequest) returns (GetInteractiveByIdsResponse);
+  // 收藏夹
+  rpc SaveFavorites(SaveFavoritesRequest) returns (SaveFavoritesResponse);
+  rpc DeleteFavorites(DeleteFavoritesRequest)returns(DeleteFavoritesResponse);
+  rpc GetByUidWithCollection(GetByUidWithCollectionRequest) returns(GetByUidWithCollectionResponse);
+  // Collect 收藏
+  rpc Collect(CollectRequest) returns(CollectResponse);
+  rpc CancelCollectForFid(CancelCollectForFidRequest) returns(CancelCollectForFidResponse);
+  rpc CancelCollect(CancelCollectRequest) returns(CancelCollectResponse);
+  rpc Move(MoveRequest) returns(MoveResponse);
+}
+
+message Interactive {
+  string biz = 1;
+  int64 biz_id = 2;
+  int64 read_cnt = 3;
+  int64 like_cnt = 4;
+  int64 collect_cnt = 5;
+  bool liked = 6;
+  bool collected = 7;
+}
+
+message IncrReadCntRequest {
+  string biz = 1;
+  int64 biz_id = 2;
+}
+
+message IncrReadCntResponse {
+
+}
+
+message LikeRequest {
+  string biz = 1;
+  int64 biz_id = 2;
+  int64 uid = 3;
+}
+
+message LikeResponse {
+
+}
+
+message CancelLikeRequest {
+  string biz = 1;
+  int64 biz_id = 2;
+  int64 uid = 3;
+}
+
+message CancelLikeResponse {
+
+}
+
+message GetInteractiveRequest {
+  string biz = 1;
+  int64 biz_id = 2;
+  int64 uid = 3;
+}
+
+message GetInteractiveResponse {
+  Interactive interactive = 1;
+}
+
+message GetInteractiveByIdsRequest {
+  string biz = 1;
+  repeated int64 ids = 2;
+}
+
+message GetInteractiveByIdsResponse {
+  map<int64, Interactive> intrs = 1;
+}
+
+message SaveFavoritesRequest {
+  int64 fid = 1;
+  string name = 2;
+  int64 uid = 3;
+}
+
+message SaveFavoritesResponse {
+  int64 fid = 1;
+}
+
+message   DeleteFavoritesRequest {
+  int64 fid = 1;
+  int64 uid = 2;
+}
+
+message DeleteFavoritesResponse {
+
+}
+message Favorites  {
+  int64 id = 1;
+  string name = 2;
+  int64 uid = 3;
+  google.protobuf.Timestamp ctime = 4;
+  google.protobuf.Timestamp utime = 5;
+  repeated UserCollectionBiz collection = 6;
+}
+
+message UserCollectionBiz {
+  int64 id = 1;
+  string biz = 2;
+  int64 biz_id = 3;
+  int64 uid = 4;
+  // 收藏夹 ID
+  int64 fid = 5;
+  google.protobuf.Timestamp ctime = 6;
+  google.protobuf.Timestamp utime = 7;
+}
+
+message GetByUidWithCollectionRequest {
+  int64 uid = 1;
+}
+
+message GetByUidWithCollectionResponse {
+  repeated Favorites favorites = 1;
+}
+
+message CollectRequest {
+  UserCollectionBiz user_collect_biz = 1;
+}
+
+message CollectResponse {
+
+}
+
+message CancelCollectForFidRequest {
+  UserCollectionBiz user_collect_biz = 1;
+}
+
+message CancelCollectForFidResponse {
+
+}
+
+message CancelCollectRequest {
+  UserCollectionBiz user_collect_biz = 1;
+}
+
+message CancelCollectResponse {
+
+}
+
+message MoveRequest {
+  UserCollectionBiz user_collect_biz = 1;
+  int64 new_id = 2;
+}
+
+message MoveResponse {
+
+}

@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "intr/v1/interactive.proto";
+
+package article.v1;
+option go_package = "article/v1;articlev1";
+
+service ArticleService{
+  rpc Save(SaveRequest) returns (SaveResponse);
+  rpc Publish(PublishRequest) returns (PublishResponse);
+  rpc Withdraw(WithdrawRequest) returns (WithdrawResponse);
+  rpc List(ListRequest) returns (ListResponse);
+  rpc GetById(GetByIdRequest) returns (GetByIdResponse);
+  // GetPublishById 查找已经发表的
+  rpc GetPublishById(GetPublishByIdRequest) returns (GetPublishByIdResponse);
+  // ListPub 根据文章更新时间来分页，更新时间必须小于 startTime
+  rpc ListPub(ListPubRequest) returns (ListPubResponse);
+  // Like 点赞
+  rpc Like(LikeRequest) returns (LikeResponse);
+  // CancelLike 取消点赞
+  rpc CancelLike(CancelLikeRequest) returns (CancelLikeResponse);
+  // GetInteractive 获取单个资源的交互数据
+  rpc GetInteractive(GetInteractiveRequest) returns(GetInteractiveResponse);
+}
+
+message Article {
+  int64 id = 1;
+  string title = 2;
+  string content = 3;
+  Author  author = 4;
+  uint32  article_status = 5;
+  google.protobuf.Timestamp ctime = 6;
+  google.protobuf.Timestamp utime = 7;
+  string abstract = 8;
+}
+
+message Author{
+  int64 id = 1;
+  string name = 2;
+}
+
+message SaveRequest {
+  Article article = 1;
+}
+
+message SaveResponse {
+  int64 id = 1;
+}
+
+message PublishRequest {
+  Article article = 1;
+}
+
+message PublishResponse {
+  int64 id = 1;
+}
+
+message WithdrawRequest {
+  int64 uid = 1;
+  int64 id = 2;
+}
+
+message WithdrawResponse {
+
+}
+
+message ListRequest {
+  int64 author = 1;
+  int64 offset = 2;
+  int64 limit = 3;
+}
+
+message ListResponse {
+  repeated Article articles = 1;
+}
+
+message GetByIdRequest {
+  int64 id = 1;
+}
+
+message GetByIdResponse {
+  Article article = 1;
+}
+
+message GetPublishByIdRequest {
+  int64 id = 1;
+  int64 uid = 2;
+}
+
+message GetPublishByIdResponse {
+  Article article = 1;
+}
+
+message ListPubRequest {
+  google.protobuf.Timestamp startTime = 1;
+  int64 offset = 2;
+  int64 limit = 3;
+}
+
+message ListPubResponse {
+  repeated Article articles = 1;
+}
+
+message LikeRequest {
+  string biz = 1;
+  int64 biz_id = 2;
+  int64 uid = 3;
+}
+
+message LikeResponse {
+
+}
+
+message CancelLikeRequest {
+  string biz = 1;
+  int64 biz_id = 2;
+  int64 uid = 3;
+}
+
+message CancelLikeResponse {
+
+}
+
+message GetInteractiveRequest {
+  string biz = 1;
+  int64 biz_id = 2;
+  int64 uid = 3;
+}
+
+message GetInteractiveResponse {
+  intr.v1.Interactive interactive = 1;
+}
