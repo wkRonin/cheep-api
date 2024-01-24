@@ -35,6 +35,7 @@ type CommentServiceClient interface {
 	DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*DeleteCommentResponse, error)
 	// CreateComment 创建评论
 	CreateComment(ctx context.Context, in *CreateCommentRequest, opts ...grpc.CallOption) (*CreateCommentResponse, error)
+	// 获取更多回复信息（当子评论超过3条时才会用这个）
 	GetMoreReplies(ctx context.Context, in *GetMoreRepliesRequest, opts ...grpc.CallOption) (*GetMoreRepliesResponse, error)
 }
 
@@ -92,6 +93,7 @@ type CommentServiceServer interface {
 	DeleteComment(context.Context, *DeleteCommentRequest) (*DeleteCommentResponse, error)
 	// CreateComment 创建评论
 	CreateComment(context.Context, *CreateCommentRequest) (*CreateCommentResponse, error)
+	// 获取更多回复信息（当子评论超过3条时才会用这个）
 	GetMoreReplies(context.Context, *GetMoreRepliesRequest) (*GetMoreRepliesResponse, error)
 	mustEmbedUnimplementedCommentServiceServer()
 }
