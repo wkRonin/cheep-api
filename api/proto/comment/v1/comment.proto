@@ -22,8 +22,8 @@ service CommentService {
 
 message CommentListRequest {
   string biz = 1;
-  int64 bizid = 2;
-  int64 max_id = 3;
+  int64 biz_id = 2;
+  int64 min_id = 3;
   int64 limit = 4;
 }
 
@@ -59,7 +59,7 @@ message Comment {
   int64 id = 1;
   int64 uid = 2;
   string biz = 3;
-  int64 bizid = 4;
+  int64 biz_id = 4;
   string content = 5;
   Comment root_comment = 6;
   Comment parent_comment = 7;
