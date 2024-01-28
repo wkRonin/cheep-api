@@ -10,6 +10,7 @@ service UserService {
   rpc FindOrCreate(FindOrCreateRequest) returns (FindOrCreateResponse);
   rpc Login(LoginRequest) returns (LoginResponse);
   rpc Profile(ProfileRequest) returns (ProfileResponse);
+  rpc Profiles(ProfilesRequest) returns (ProfilesResponse);
   // UpdateNonSensitiveInfo 更新非敏感数据
   rpc UpdateNonSensitiveInfo(UpdateNonSensitiveInfoRequest) returns (UpdateNonSensitiveInfoResponse);
   rpc FindOrCreateByWechat(FindOrCreateByWechatRequest) returns (FindOrCreateByWechatResponse);
@@ -33,6 +34,14 @@ message User  {
 message WechatInfo  {
   string open_id = 1;
   string union_id = 2;
+}
+
+message    ProfilesRequest {
+  repeated int64 ids = 1;
+}
+
+message    ProfilesResponse {
+  repeated User users = 1;
 }
 
 message SignupRequest {
