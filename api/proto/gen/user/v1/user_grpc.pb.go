@@ -23,6 +23,7 @@ const (
 	UserService_FindOrCreate_FullMethodName           = "/user.v1.UserService/FindOrCreate"
 	UserService_Login_FullMethodName                  = "/user.v1.UserService/Login"
 	UserService_Profile_FullMethodName                = "/user.v1.UserService/Profile"
+	UserService_Profiles_FullMethodName               = "/user.v1.UserService/Profiles"
 	UserService_UpdateNonSensitiveInfo_FullMethodName = "/user.v1.UserService/UpdateNonSensitiveInfo"
 	UserService_FindOrCreateByWechat_FullMethodName   = "/user.v1.UserService/FindOrCreateByWechat"
 	UserService_AuthURL_FullMethodName                = "/user.v1.UserService/AuthURL"
@@ -37,6 +38,7 @@ type UserServiceClient interface {
 	FindOrCreate(ctx context.Context, in *FindOrCreateRequest, opts ...grpc.CallOption) (*FindOrCreateResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Profile(ctx context.Context, in *ProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+	Profiles(ctx context.Context, in *ProfilesRequest, opts ...grpc.CallOption) (*ProfilesResponse, error)
 	// UpdateNonSensitiveInfo 更新非敏感数据
 	UpdateNonSensitiveInfo(ctx context.Context, in *UpdateNonSensitiveInfoRequest, opts ...grpc.CallOption) (*UpdateNonSensitiveInfoResponse, error)
 	FindOrCreateByWechat(ctx context.Context, in *FindOrCreateByWechatRequest, opts ...grpc.CallOption) (*FindOrCreateByWechatResponse, error)
@@ -89,6 +91,15 @@ func (c *userServiceClient) Profile(ctx context.Context, in *ProfileRequest, opt
 	return out, nil
 }
 
+func (c *userServiceClient) Profiles(ctx context.Context, in *ProfilesRequest, opts ...grpc.CallOption) (*ProfilesResponse, error) {
+	out := new(ProfilesResponse)
+	err := c.cc.Invoke(ctx, UserService_Profiles_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userServiceClient) UpdateNonSensitiveInfo(ctx context.Context, in *UpdateNonSensitiveInfoRequest, opts ...grpc.CallOption) (*UpdateNonSensitiveInfoResponse, error) {
 	out := new(UpdateNonSensitiveInfoResponse)
 	err := c.cc.Invoke(ctx, UserService_UpdateNonSensitiveInfo_FullMethodName, in, out, opts...)
@@ -133,6 +144,7 @@ type UserServiceServer interface {
 	FindOrCreate(context.Context, *FindOrCreateRequest) (*FindOrCreateResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Profile(context.Context, *ProfileRequest) (*ProfileResponse, error)
+	Profiles(context.Context, *ProfilesRequest) (*ProfilesResponse, error)
 	// UpdateNonSensitiveInfo 更新非敏感数据
 	UpdateNonSensitiveInfo(context.Context, *UpdateNonSensitiveInfoRequest) (*UpdateNonSensitiveInfoResponse, error)
 	FindOrCreateByWechat(context.Context, *FindOrCreateByWechatRequest) (*FindOrCreateByWechatResponse, error)
@@ -157,6 +169,9 @@ func (UnimplementedUserServiceServer) Login(context.Context, *LoginRequest) (*Lo
 }
 func (UnimplementedUserServiceServer) Profile(context.Context, *ProfileRequest) (*ProfileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Profile not implemented")
+}
+func (UnimplementedUserServiceServer) Profiles(context.Context, *ProfilesRequest) (*ProfilesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Profiles not implemented")
 }
 func (UnimplementedUserServiceServer) UpdateNonSensitiveInfo(context.Context, *UpdateNonSensitiveInfoRequest) (*UpdateNonSensitiveInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateNonSensitiveInfo not implemented")
@@ -255,6 +270,24 @@ func _UserService_Profile_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_Profiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProfilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Profiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_Profiles_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Profiles(ctx, req.(*ProfilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserService_UpdateNonSensitiveInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateNonSensitiveInfoRequest)
 	if err := dec(in); err != nil {
@@ -349,6 +382,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Profile",
 			Handler:    _UserService_Profile_Handler,
+		},
+		{
+			MethodName: "Profiles",
+			Handler:    _UserService_Profiles_Handler,
 		},
 		{
 			MethodName: "UpdateNonSensitiveInfo",
