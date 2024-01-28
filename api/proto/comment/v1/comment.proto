@@ -57,7 +57,7 @@ message GetMoreRepliesResponse {
 
 message Comment {
   int64 id = 1;
-  int64 uid = 2;
+  User commentator = 2;
   string biz = 3;
   int64 biz_id = 4;
   string content = 5;
@@ -66,4 +66,9 @@ message Comment {
   repeated Comment children = 8;
   google.protobuf.Timestamp ctime = 9;
   google.protobuf.Timestamp utime = 10;
+}
+
+message User {
+  int64 id = 1;
+  string name = 2;
 }
