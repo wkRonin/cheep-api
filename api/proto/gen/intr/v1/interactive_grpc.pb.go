@@ -31,6 +31,8 @@ const (
 	InteractiveService_CancelCollectForFid_FullMethodName    = "/intr.v1.InteractiveService/CancelCollectForFid"
 	InteractiveService_CancelCollect_FullMethodName          = "/intr.v1.InteractiveService/CancelCollect"
 	InteractiveService_Move_FullMethodName                   = "/intr.v1.InteractiveService/Move"
+	InteractiveService_IncrComment_FullMethodName            = "/intr.v1.InteractiveService/IncrComment"
+	InteractiveService_DecrComment_FullMethodName            = "/intr.v1.InteractiveService/DecrComment"
 )
 
 // InteractiveServiceClient is the client API for InteractiveService service.
@@ -55,6 +57,9 @@ type InteractiveServiceClient interface {
 	CancelCollectForFid(ctx context.Context, in *CancelCollectForFidRequest, opts ...grpc.CallOption) (*CancelCollectForFidResponse, error)
 	CancelCollect(ctx context.Context, in *CancelCollectRequest, opts ...grpc.CallOption) (*CancelCollectResponse, error)
 	Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*MoveResponse, error)
+	// 评论计数
+	IncrComment(ctx context.Context, in *IncrCommentRequest, opts ...grpc.CallOption) (*IncrCommentResponse, error)
+	DecrComment(ctx context.Context, in *DecrCommentRequest, opts ...grpc.CallOption) (*DecrCommentResponse, error)
 }
 
 type interactiveServiceClient struct {
@@ -173,6 +178,24 @@ func (c *interactiveServiceClient) Move(ctx context.Context, in *MoveRequest, op
 	return out, nil
 }
 
+func (c *interactiveServiceClient) IncrComment(ctx context.Context, in *IncrCommentRequest, opts ...grpc.CallOption) (*IncrCommentResponse, error) {
+	out := new(IncrCommentResponse)
+	err := c.cc.Invoke(ctx, InteractiveService_IncrComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interactiveServiceClient) DecrComment(ctx context.Context, in *DecrCommentRequest, opts ...grpc.CallOption) (*DecrCommentResponse, error) {
+	out := new(DecrCommentResponse)
+	err := c.cc.Invoke(ctx, InteractiveService_DecrComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // InteractiveServiceServer is the server API for InteractiveService service.
 // All implementations must embed UnimplementedInteractiveServiceServer
 // for forward compatibility
@@ -195,6 +218,9 @@ type InteractiveServiceServer interface {
 	CancelCollectForFid(context.Context, *CancelCollectForFidRequest) (*CancelCollectForFidResponse, error)
 	CancelCollect(context.Context, *CancelCollectRequest) (*CancelCollectResponse, error)
 	Move(context.Context, *MoveRequest) (*MoveResponse, error)
+	// 评论计数
+	IncrComment(context.Context, *IncrCommentRequest) (*IncrCommentResponse, error)
+	DecrComment(context.Context, *DecrCommentRequest) (*DecrCommentResponse, error)
 	mustEmbedUnimplementedInteractiveServiceServer()
 }
 
@@ -237,6 +263,12 @@ func (UnimplementedInteractiveServiceServer) CancelCollect(context.Context, *Can
 }
 func (UnimplementedInteractiveServiceServer) Move(context.Context, *MoveRequest) (*MoveResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Move not implemented")
+}
+func (UnimplementedInteractiveServiceServer) IncrComment(context.Context, *IncrCommentRequest) (*IncrCommentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IncrComment not implemented")
+}
+func (UnimplementedInteractiveServiceServer) DecrComment(context.Context, *DecrCommentRequest) (*DecrCommentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DecrComment not implemented")
 }
 func (UnimplementedInteractiveServiceServer) mustEmbedUnimplementedInteractiveServiceServer() {}
 
@@ -467,6 +499,42 @@ func _InteractiveService_Move_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _InteractiveService_IncrComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IncrCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InteractiveServiceServer).IncrComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InteractiveService_IncrComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InteractiveServiceServer).IncrComment(ctx, req.(*IncrCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InteractiveService_DecrComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DecrCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InteractiveServiceServer).DecrComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InteractiveService_DecrComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InteractiveServiceServer).DecrComment(ctx, req.(*DecrCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // InteractiveService_ServiceDesc is the grpc.ServiceDesc for InteractiveService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -521,6 +589,14 @@ var InteractiveService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Move",
 			Handler:    _InteractiveService_Move_Handler,
+		},
+		{
+			MethodName: "IncrComment",
+			Handler:    _InteractiveService_IncrComment_Handler,
+		},
+		{
+			MethodName: "DecrComment",
+			Handler:    _InteractiveService_DecrComment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
