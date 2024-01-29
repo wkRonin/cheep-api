@@ -33,6 +33,8 @@ message CommentListResponse {
 
 message DeleteCommentRequest {
   int64 id = 1;
+  string biz = 2;
+  int64 biz_id = 3;
 }
 
 message DeleteCommentResponse {
