@@ -10,7 +10,7 @@ message FollowRelation {
   int64 followee = 3;
 }
 
-service FollowService {
+service RelationService {
   // 增删
   rpc Follow (FollowRequest) returns (FollowResponse);
   rpc CancelFollow(CancelFollowRequest) returns (CancelFollowResponse);
