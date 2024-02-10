@@ -4,7 +4,7 @@
 // - protoc             (unknown)
 // source: relation/v1/relation.proto
 
-package followv1
+package relationv1
 
 import (
 	context "context"
@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	FollowService_Follow_FullMethodName       = "/follow.v1.FollowService/Follow"
-	FollowService_CancelFollow_FullMethodName = "/follow.v1.FollowService/CancelFollow"
-	FollowService_GetFollowing_FullMethodName = "/follow.v1.FollowService/GetFollowing"
-	FollowService_GetFans_FullMethodName      = "/follow.v1.FollowService/GetFans"
-	FollowService_FollowInfo_FullMethodName   = "/follow.v1.FollowService/FollowInfo"
+	FollowService_Follow_FullMethodName       = "/relation.v1.FollowService/Follow"
+	FollowService_CancelFollow_FullMethodName = "/relation.v1.FollowService/CancelFollow"
+	FollowService_GetFollowing_FullMethodName = "/relation.v1.FollowService/GetFollowing"
+	FollowService_GetFans_FullMethodName      = "/relation.v1.FollowService/GetFans"
+	FollowService_FollowInfo_FullMethodName   = "/relation.v1.FollowService/FollowInfo"
 )
 
 // FollowServiceClient is the client API for FollowService service.
@@ -236,7 +236,7 @@ func _FollowService_FollowInfo_Handler(srv interface{}, ctx context.Context, dec
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var FollowService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "follow.v1.FollowService",
+	ServiceName: "relation.v1.FollowService",
 	HandlerType: (*FollowServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
