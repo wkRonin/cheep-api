@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package follow.v1;
+package relation.v1;
 option go_package="relation/v1;relationv1";
 
 
