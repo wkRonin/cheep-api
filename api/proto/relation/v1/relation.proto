@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package follow.v1;
+option go_package="relation/v1;relationv1";
+
+
+message FollowRelation {
+  int64 id = 1;
+  int64 follower = 2;
+  int64 followee = 3;
+}
+
+service FollowService {
+  // 增删
+  rpc Follow (FollowRequest) returns (FollowResponse);
+  rpc CancelFollow(CancelFollowRequest) returns (CancelFollowResponse);
+
+  // 获得某个人的关注列表
+  rpc GetFollowing (GetFollowingRequest) returns (GetFollowingResponse);
+  // 获得粉丝列表
+  rpc GetFans (GetFansRequest) returns (GetFansResponse);
+  // 获得某个人关注另外一个人的详细信息
+  rpc FollowInfo (FollowInfoRequest) returns (FollowInfoResponse);
+}
+
+message GetFollowingRequest {
+  // 查看某人的关注列表
+  int64 follower = 1;
+  int64 offset = 2;
+  int64 limit =3;
+}
+
+message GetFollowingResponse {
+  repeated FollowRelation follow_relations = 1;
+}
+
+message GetFansRequest {
+  // 获取粉丝列表，被关注者为自己
+  int64 followee = 1;
+  int64 offset = 2;
+  int64 limit =3;
+}
+
+message GetFansResponse {
+  repeated FollowRelation follow_relations = 1;
+}
+
+message FollowInfoRequest {
+  // 关注者
+  int64 follower = 1;
+  // 被关注者
+  int64 followee = 2;
+}
+
+message FollowInfoResponse {
+  FollowRelation follow_relation = 1;
+}
+
+message FollowRequest {
+  int64 follower = 1;
+  int64 followee = 2;
+}
+
+message FollowResponse {
+}
+
+message CancelFollowRequest {
+  int64 follower = 1;
+  int64 followee = 2;
+}
+
+message CancelFollowResponse {
+}
