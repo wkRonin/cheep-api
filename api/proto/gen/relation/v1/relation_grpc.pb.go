@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	RelationService_Follow_FullMethodName       = "/relation.v1.RelationService/Follow"
-	RelationService_CancelFollow_FullMethodName = "/relation.v1.RelationService/CancelFollow"
-	RelationService_GetFollowing_FullMethodName = "/relation.v1.RelationService/GetFollowing"
-	RelationService_GetFans_FullMethodName      = "/relation.v1.RelationService/GetFans"
-	RelationService_FollowInfo_FullMethodName   = "/relation.v1.RelationService/FollowInfo"
+	RelationService_Follow_FullMethodName        = "/relation.v1.RelationService/Follow"
+	RelationService_CancelFollow_FullMethodName  = "/relation.v1.RelationService/CancelFollow"
+	RelationService_GetFollowing_FullMethodName  = "/relation.v1.RelationService/GetFollowing"
+	RelationService_GetFans_FullMethodName       = "/relation.v1.RelationService/GetFans"
+	RelationService_FollowInfo_FullMethodName    = "/relation.v1.RelationService/FollowInfo"
+	RelationService_FollowStatics_FullMethodName = "/relation.v1.RelationService/FollowStatics"
 )
 
 // RelationServiceClient is the client API for RelationService service.
@@ -39,6 +40,8 @@ type RelationServiceClient interface {
 	GetFans(ctx context.Context, in *GetFansRequest, opts ...grpc.CallOption) (*GetFansResponse, error)
 	// 获得某个人关注另外一个人的详细信息
 	FollowInfo(ctx context.Context, in *FollowInfoRequest, opts ...grpc.CallOption) (*FollowInfoResponse, error)
+	// 关注数与粉丝数
+	FollowStatics(ctx context.Context, in *FollowStaticsRequest, opts ...grpc.CallOption) (*FollowStaticsResponse, error)
 }
 
 type relationServiceClient struct {
@@ -94,6 +97,15 @@ func (c *relationServiceClient) FollowInfo(ctx context.Context, in *FollowInfoRe
 	return out, nil
 }
 
+func (c *relationServiceClient) FollowStatics(ctx context.Context, in *FollowStaticsRequest, opts ...grpc.CallOption) (*FollowStaticsResponse, error) {
+	out := new(FollowStaticsResponse)
+	err := c.cc.Invoke(ctx, RelationService_FollowStatics_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RelationServiceServer is the server API for RelationService service.
 // All implementations must embed UnimplementedRelationServiceServer
 // for forward compatibility
@@ -107,6 +119,8 @@ type RelationServiceServer interface {
 	GetFans(context.Context, *GetFansRequest) (*GetFansResponse, error)
 	// 获得某个人关注另外一个人的详细信息
 	FollowInfo(context.Context, *FollowInfoRequest) (*FollowInfoResponse, error)
+	// 关注数与粉丝数
+	FollowStatics(context.Context, *FollowStaticsRequest) (*FollowStaticsResponse, error)
 	mustEmbedUnimplementedRelationServiceServer()
 }
 
@@ -128,6 +142,9 @@ func (UnimplementedRelationServiceServer) GetFans(context.Context, *GetFansReque
 }
 func (UnimplementedRelationServiceServer) FollowInfo(context.Context, *FollowInfoRequest) (*FollowInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FollowInfo not implemented")
+}
+func (UnimplementedRelationServiceServer) FollowStatics(context.Context, *FollowStaticsRequest) (*FollowStaticsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FollowStatics not implemented")
 }
 func (UnimplementedRelationServiceServer) mustEmbedUnimplementedRelationServiceServer() {}
 
@@ -232,6 +249,24 @@ func _RelationService_FollowInfo_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RelationService_FollowStatics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FollowStaticsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationServiceServer).FollowStatics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RelationService_FollowStatics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationServiceServer).FollowStatics(ctx, req.(*FollowStaticsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RelationService_ServiceDesc is the grpc.ServiceDesc for RelationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -258,6 +293,10 @@ var RelationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FollowInfo",
 			Handler:    _RelationService_FollowInfo_Handler,
+		},
+		{
+			MethodName: "FollowStatics",
+			Handler:    _RelationService_FollowStatics_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

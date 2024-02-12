@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package relation.v1;
-option go_package="relation/v1;relationv1";
+option go_package = "relation/v1;relationv1";
 
 
 message FollowRelation {
@@ -21,13 +21,15 @@ service RelationService {
   rpc GetFans (GetFansRequest) returns (GetFansResponse);
   // 获得某个人关注另外一个人的详细信息
   rpc FollowInfo (FollowInfoRequest) returns (FollowInfoResponse);
+  // 关注数与粉丝数
+  rpc FollowStatics (FollowStaticsRequest) returns (FollowStaticsResponse);
 }
 
 message GetFollowingRequest {
   // 查看某人的关注列表
   int64 follower = 1;
   int64 offset = 2;
-  int64 limit =3;
+  int64 limit = 3;
 }
 
 message GetFollowingResponse {
@@ -38,7 +40,7 @@ message GetFansRequest {
   // 获取粉丝列表，被关注者为自己
   int64 followee = 1;
   int64 offset = 2;
-  int64 limit =3;
+  int64 limit = 3;
 }
 
 message GetFansResponse {
@@ -70,4 +72,15 @@ message CancelFollowRequest {
 }
 
 message CancelFollowResponse {
+}
+
+message FollowStaticsRequest {
+  int64 uid = 1;
+}
+
+message FollowStaticsResponse {
+  // 某人关注的人数
+  int64 following = 1;
+  // 某人的关注者数（粉丝数）
+  int64 follower = 2;
 }
